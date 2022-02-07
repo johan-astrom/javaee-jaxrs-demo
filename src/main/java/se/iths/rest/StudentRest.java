@@ -1,6 +1,8 @@
 package se.iths.rest;
 
+import com.google.gson.Gson;
 import se.iths.entity.Student;
+import se.iths.exception.StudentErrorMessage;
 import se.iths.exception.StudentNotFoundServiceException;
 import se.iths.exception.StudentNotFoundWebException;
 import se.iths.service.StudentService;
@@ -8,10 +10,7 @@ import se.iths.service.StudentService;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.util.List;
 
 @RequestScoped
@@ -22,10 +21,13 @@ public class StudentRest {
     private StudentService studentService;
 
     @GET
+    @Produces("application/json")
     public Response getAllStudents() {
         List<Student> students = studentService.getAllStudents();
-        if (students == null) {
-            throw new StudentNotFoundWebException("No students stored in the database.", Response.Status.NO_CONTENT);
+        if (students.isEmpty()) {
+            return Response.status(Response.Status.NO_CONTENT)
+                    .entity(new StudentErrorMessage("No students found in the database.", 204))
+                    .build();
         } else {
             return Response.ok(students).build();
         }
@@ -67,7 +69,7 @@ public class StudentRest {
     public Response updateStudent(@PathParam("id") Long id, Student student) {
         try {
             return Response.ok(studentService.updateStudent(id, student)).build();
-        }catch (StudentNotFoundServiceException e){
+        } catch (StudentNotFoundServiceException e) {
             throw new StudentNotFoundWebException(e.getMessage(), Response.Status.BAD_REQUEST);
         }
     }
@@ -75,10 +77,10 @@ public class StudentRest {
     @DELETE
     @Path("{id}")
     public Response deleteStudent(@PathParam("id") Long id) {
-        try{
+        try {
             studentService.deleteStudent(id);
             return Response.noContent().build();
-        }catch (StudentNotFoundServiceException e){
+        } catch (StudentNotFoundServiceException e) {
             throw new StudentNotFoundWebException(e.getMessage(), Response.Status.BAD_REQUEST);
         }
     }
