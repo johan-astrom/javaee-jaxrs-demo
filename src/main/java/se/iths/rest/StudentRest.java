@@ -1,6 +1,8 @@
 package se.iths.rest;
 
 import se.iths.entity.Student;
+import se.iths.exception.StudentNotFoundServiceException;
+import se.iths.exception.StudentNotFoundWebException;
 import se.iths.service.StudentService;
 
 import javax.enterprise.context.RequestScoped;
@@ -10,6 +12,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
+import java.util.List;
 
 @RequestScoped
 @Path("/students")
@@ -20,19 +23,35 @@ public class StudentRest {
 
     @GET
     public Response getAllStudents() {
-        return Response.ok(studentService.getAllStudents()).build();
+        List<Student> students = studentService.getAllStudents();
+        if (students == null) {
+            throw new StudentNotFoundWebException("No students stored in the database.", Response.Status.NO_CONTENT);
+        } else {
+            return Response.ok(students).build();
+        }
+
     }
 
     @GET
     @Path("{id}")
     public Response getStudentById(@PathParam("id") Long id) {
-        return Response.ok(studentService.getStudentById(id)).build();
+        Student student = studentService.getStudentById(id);
+        if (student == null) {
+            throw new StudentNotFoundWebException("No student with the specified id found.", Response.Status.NO_CONTENT);
+        } else {
+            return Response.ok(student).build();
+        }
     }
 
     @GET
     @Path("getByLastName/{lastName}")
-    public Response getStudentByLastName(@PathParam("lastName") String lastName){
-        return Response.ok(studentService.getStudentByLastName(lastName)).build();
+    public Response getStudentByLastName(@PathParam("lastName") String lastName) {
+        Student student = studentService.getStudentByLastName(lastName);
+        if (student == null) {
+            throw new StudentNotFoundWebException("No student with the specified last name found.", Response.Status.NO_CONTENT);
+        } else {
+            return Response.ok(student).build();
+        }
     }
 
     @POST
@@ -46,14 +65,22 @@ public class StudentRest {
     @PUT
     @Path("{id}")
     public Response updateStudent(@PathParam("id") Long id, Student student) {
-        return Response.ok(studentService.updateStudent(id, student)).build();
+        try {
+            return Response.ok(studentService.updateStudent(id, student)).build();
+        }catch (StudentNotFoundServiceException e){
+            throw new StudentNotFoundWebException(e.getMessage(), Response.Status.BAD_REQUEST);
+        }
     }
 
     @DELETE
     @Path("{id}")
     public Response deleteStudent(@PathParam("id") Long id) {
-        studentService.deleteStudent(id);
-        return Response.noContent().build();
+        try{
+            studentService.deleteStudent(id);
+            return Response.noContent().build();
+        }catch (StudentNotFoundServiceException e){
+            throw new StudentNotFoundWebException(e.getMessage(), Response.Status.BAD_REQUEST);
+        }
     }
 
 
