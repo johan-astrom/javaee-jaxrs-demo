@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@NamedQueries(
+        {
+                @NamedQuery(name = "Teacher.GetAll",
+        query = "select t from Teacher t")})
 public class Teacher {
 
     @Id

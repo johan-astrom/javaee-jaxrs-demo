@@ -1,9 +1,8 @@
 package se.iths.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Subject {
@@ -12,6 +11,10 @@ public class Subject {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+    @ManyToMany
+    private List<Student> students = new ArrayList<>();
+    @ManyToOne
+    private Teacher teacher;
 
     public Subject() {
     }

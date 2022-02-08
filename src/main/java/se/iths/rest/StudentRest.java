@@ -1,10 +1,9 @@
 package se.iths.rest;
 
-import com.google.gson.Gson;
 import se.iths.entity.Student;
 import se.iths.exception.StudentErrorMessage;
-import se.iths.exception.StudentNotFoundServiceException;
-import se.iths.exception.StudentNotFoundWebException;
+import se.iths.exception.EntityNotFoundServiceException;
+import se.iths.exception.EntityNotFoundWebException;
 import se.iths.service.StudentService;
 
 import javax.enterprise.context.RequestScoped;
@@ -39,7 +38,7 @@ public class StudentRest {
     public Response getStudentById(@PathParam("id") Long id) {
         Student student = studentService.getStudentById(id);
         if (student == null) {
-            throw new StudentNotFoundWebException("No student with the specified id found.", Response.Status.NO_CONTENT);
+            throw new EntityNotFoundWebException("No student with the specified id found.", Response.Status.NO_CONTENT);
         } else {
             return Response.ok(student).build();
         }
@@ -50,7 +49,7 @@ public class StudentRest {
     public Response getStudentByLastName(@PathParam("lastName") String lastName) {
         Student student = studentService.getStudentByLastName(lastName);
         if (student == null) {
-            throw new StudentNotFoundWebException("No student with the specified last name found.", Response.Status.NO_CONTENT);
+            throw new EntityNotFoundWebException("No student with the specified last name found.", Response.Status.NO_CONTENT);
         } else {
             return Response.ok(student).build();
         }
@@ -69,8 +68,8 @@ public class StudentRest {
     public Response updateStudent(@PathParam("id") Long id, Student student) {
         try {
             return Response.ok(studentService.updateStudent(id, student)).build();
-        } catch (StudentNotFoundServiceException e) {
-            throw new StudentNotFoundWebException(e.getMessage(), Response.Status.BAD_REQUEST);
+        } catch (EntityNotFoundServiceException e) {
+            throw new EntityNotFoundWebException(e.getMessage(), Response.Status.BAD_REQUEST);
         }
     }
 
@@ -80,8 +79,8 @@ public class StudentRest {
         try {
             studentService.deleteStudent(id);
             return Response.noContent().build();
-        } catch (StudentNotFoundServiceException e) {
-            throw new StudentNotFoundWebException(e.getMessage(), Response.Status.BAD_REQUEST);
+        } catch (EntityNotFoundServiceException e) {
+            throw new EntityNotFoundWebException(e.getMessage(), Response.Status.BAD_REQUEST);
         }
     }
 

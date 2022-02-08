@@ -22,7 +22,7 @@ public class Student {
     @NotNull
     private String email;
     private String phoneNumber;
-    @OneToMany
+    @ManyToMany
     private List<Subject> subjects = new ArrayList<>();
 
     public Long getId() {

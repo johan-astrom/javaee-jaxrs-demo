@@ -2,8 +2,7 @@ package se.iths.service;
 
 
 import se.iths.entity.Student;
-import se.iths.exception.StudentNotFoundServiceException;
-import se.iths.exception.StudentNotFoundWebException;
+import se.iths.exception.EntityNotFoundServiceException;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -35,15 +34,15 @@ public class StudentService {
         return student;
     }
 
-    public void deleteStudent(Long id) throws StudentNotFoundServiceException {
+    public void deleteStudent(Long id) throws EntityNotFoundServiceException {
         Student student = getStudentById(id);
-        if (student == null) throw new StudentNotFoundServiceException("There is no student with the specified id.");
+        if (student == null) throw new EntityNotFoundServiceException("There is no student with the specified id.");
         else em.remove(student);
     }
 
-    public Student updateStudent(Long id, Student student) throws StudentNotFoundServiceException {
+    public Student updateStudent(Long id, Student student) throws EntityNotFoundServiceException {
         Student originalStudent = getStudentById(id);
-        if (originalStudent == null) throw new StudentNotFoundServiceException("There is no student with the specified id.");
+        if (originalStudent == null) throw new EntityNotFoundServiceException("There is no student with the specified id.");
         else {
             setStudentDetails(student, originalStudent);
             return originalStudent;
