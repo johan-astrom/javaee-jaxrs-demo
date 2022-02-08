@@ -14,6 +14,8 @@ import java.util.List;
 
 @RequestScoped
 @Path("/students")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class StudentRest {
 
     @Inject

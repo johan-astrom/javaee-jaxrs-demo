@@ -10,21 +10,19 @@ import se.iths.service.TeacherService;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
 import java.util.List;
 
 @RequestScoped
 @Path("teachers")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class TeacherRest {
 
     @Inject
     private TeacherService teacherService;
 
     @GET
-    @Produces("application/json")
     public Response getAllTeachers() {
         List<Teacher> teachers = teacherService.getAllTeachers();
         if (teachers.isEmpty()) {
