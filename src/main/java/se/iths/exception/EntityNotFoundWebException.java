@@ -8,4 +8,6 @@ public class EntityNotFoundWebException extends WebApplicationException {
     public EntityNotFoundWebException(String message, Response.Status status){
         super(message, status);
     }
+
+    public EntityNotFoundWebException(Response response){super(response);}
 }

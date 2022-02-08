@@ -48,7 +48,7 @@ public class StudentRest {
     public Response getStudentByLastName(@PathParam("lastName") String lastName) {
         Student student = studentService.getStudentByLastName(lastName);
         if (student == null) {
-            throw new EntityNotFoundWebException("No student with the specified last name found.", Response.Status.NO_CONTENT);
+            throw new EntityNotFoundWebException(Response.noContent().entity(new StudentErrorMessage("No student with the specified last name found.", 204)).build());
         } else {
             return Response.ok(student).build();
         }
