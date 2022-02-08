@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.List;
+import java.util.Objects;
 
 @RequestScoped
 @Path("/students")
@@ -39,11 +40,7 @@ public class StudentRest {
     @Path("{id}")
     public Response getStudentById(@PathParam("id") Long id) {
         Student student = studentService.getStudentById(id);
-        if (student == null) {
-            throw new EntityNotFoundWebException("No student with the specified id found.", Response.Status.NO_CONTENT);
-        } else {
-            return Response.ok(student).build();
-        }
+        return Response.ok(Objects.requireNonNullElseGet(student, () -> new StudentErrorMessage("No student with the specified id found", 200))).build();
     }
 
     @GET
