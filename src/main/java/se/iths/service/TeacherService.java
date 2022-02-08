@@ -1,7 +1,5 @@
 package se.iths.service;
 
-
-import se.iths.entity.Student;
 import se.iths.entity.Teacher;
 import se.iths.exception.EntityNotFoundServiceException;
 
