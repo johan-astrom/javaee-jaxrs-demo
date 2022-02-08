@@ -2,11 +2,13 @@ package se.iths.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NamedQueries(
-        {       @NamedQuery(name = "Student.GetAll",
-                        query = "select s from Student s"),
+        {@NamedQuery(name = "Student.GetAll",
+                query = "select s from Student s"),
         })
 public class Student {
 
@@ -20,6 +22,8 @@ public class Student {
     @NotNull
     private String email;
     private String phoneNumber;
+    @OneToMany
+    private List<Subject> subjects = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -59,5 +63,13 @@ public class Student {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public List<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(List<Subject> subjects) {
+        this.subjects = subjects;
     }
 }
