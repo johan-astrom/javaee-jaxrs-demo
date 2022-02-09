@@ -5,6 +5,7 @@ import se.iths.entity.Subject;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Stateless
 public class SubjectService {
@@ -15,6 +16,10 @@ public class SubjectService {
     public Subject createSubject(Subject subject){
         em.persist(subject);
         return subject;
+    }
+
+    public List<Subject> getAllSubjects(){
+        return em.createNamedQuery("Subject.GetAll", Subject.class).getResultList();
     }
 
     public Subject getSubjectById(Long id){

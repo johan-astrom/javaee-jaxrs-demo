@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@NamedQueries(
+        {
+                @NamedQuery(name = "Subject.GetAll",
+                        query = "select s from Subject s")})
 public class Subject {
 
     @Id

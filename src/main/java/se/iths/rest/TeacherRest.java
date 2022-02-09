@@ -27,7 +27,7 @@ public class TeacherRest {
         List<Teacher> teachers = teacherService.getAllTeachers();
         if (teachers.isEmpty()) {
             return Response.status(Response.Status.NO_CONTENT)
-                    .entity(new StudentErrorMessage("No teachers found in the database.", 204))
+                    .entity(new StudentErrorMessage("No teachers found in the database.", Response.Status.NO_CONTENT))
                     .build();
         } else {
             return Response.ok(teachers).build();

@@ -8,6 +8,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
+import java.util.List;
 
 @RequestScoped
 @Produces(MediaType.APPLICATION_JSON)
@@ -26,6 +27,16 @@ public class SubjectRest {
             throw new EntityNotFoundWebException("No subject with the specified id found.", Response.Status.NO_CONTENT);
         } else {
             return Response.ok(subject).build();
+        }
+    }
+
+    @GET
+    public Response getAllSubjects(){
+        List<Subject> subjects = subjectService.getAllSubjects();
+        if (subjects.isEmpty()){
+            throw new EntityNotFoundWebException("No subjects found.", Response.Status.NO_CONTENT);
+        }else {
+            return Response.ok(subjects).build();
         }
     }
 
