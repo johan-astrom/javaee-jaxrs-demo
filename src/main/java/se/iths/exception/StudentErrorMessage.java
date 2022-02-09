@@ -1,11 +1,13 @@
 package se.iths.exception;
 
+import javax.ws.rs.core.Response;
+
 public class StudentErrorMessage {
 
     private String message;
-    private int status;
+    private Response.Status status;
 
-    public StudentErrorMessage(String message, int status) {
+    public StudentErrorMessage(String message, Response.Status status) {
         this.message = message;
         this.status = status;
     }

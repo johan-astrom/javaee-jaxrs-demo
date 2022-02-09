@@ -1,13 +1,12 @@
 package se.iths.rest;
 
 import se.iths.entity.Student;
-import se.iths.exception.StudentErrorMessage;
-import se.iths.exception.EntityNotFoundServiceException;
-import se.iths.exception.EntityNotFoundWebException;
+import se.iths.exception.*;
 import se.iths.service.StudentService;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.persistence.NonUniqueResultException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.List;
@@ -28,7 +27,7 @@ public class StudentRest {
         List<Student> students = studentService.getAllStudents();
         if (students.isEmpty()) {
             return Response.status(Response.Status.NO_CONTENT)
-                    .entity(new StudentErrorMessage("No students found in the database.", 204))
+                    .entity(new StudentErrorMessage("No students found in the database.", Response.Status.NOT_FOUND))
                     .build();
         } else {
             return Response.ok(students).build();
@@ -40,17 +39,25 @@ public class StudentRest {
     @Path("{id}")
     public Response getStudentById(@PathParam("id") Long id) {
         Student student = studentService.getStudentById(id);
-        return Response.ok(Objects.requireNonNullElseGet(student, () -> new StudentErrorMessage("No student with the specified id found", 200))).build();
+        if (student == null){
+            throw new EntityNotFoundWebException("No student with the specified id  found.", Response.Status.NO_CONTENT);
+        }else{
+            return Response.ok(student).build();
+        }
     }
 
     @GET
     @Path("getByLastName/{lastName}")
     public Response getStudentByLastName(@PathParam("lastName") String lastName) {
-        Student student = studentService.getStudentByLastName(lastName);
-        if (student == null) {
-            throw new EntityNotFoundWebException(Response.noContent().entity(new StudentErrorMessage("No student with the specified last name found.", 204)).build());
-        } else {
-            return Response.ok(student).build();
+        try {
+            Student student = studentService.getStudentByLastName(lastName);
+            if (student == null) {
+                throw new EntityNotFoundWebException("No student with the specified last name found.", Response.Status.NO_CONTENT);
+            } else {
+                return Response.ok(student).build();
+            }
+        } catch (NonUniqueResultException e) {
+            throw new NonUniqueResultWebException("Several students with the same last name found.", Response.Status.NO_CONTENT);
         }
     }
 

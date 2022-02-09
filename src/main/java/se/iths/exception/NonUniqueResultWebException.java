@@ -4,9 +4,9 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-public class EntityNotFoundWebException extends WebApplicationException {
+public class NonUniqueResultWebException extends WebApplicationException {
 
-    public EntityNotFoundWebException(String message, Response.Status status){
+    public NonUniqueResultWebException(String message, Response.Status status) {
         super(Response.status(status)
                 .entity(new StudentErrorMessage(message, status))
                 .type(MediaType.APPLICATION_JSON)
