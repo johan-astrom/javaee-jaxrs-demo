@@ -69,6 +69,7 @@ public class StudentRest {
             return Response.ok(studentService.updateStudent(id, student)).build();
         } catch (EntityNotFoundServiceException e) {
             throw new EntityNotFoundWebException(e.getMessage(), Response.Status.BAD_REQUEST);
+
         }
     }
 
