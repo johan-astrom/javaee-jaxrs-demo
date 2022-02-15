@@ -2,6 +2,7 @@ package se.iths.service;
 
 
 import se.iths.entity.Student;
+import se.iths.entity.Subject;
 import se.iths.exception.EntityNotFoundServiceException;
 
 import javax.ejb.Stateless;
@@ -54,6 +55,16 @@ public class StudentService {
         originalStudent.setLastName(student.getLastName());
         originalStudent.setEmail(student.getEmail());
         originalStudent.setPhoneNumber(student.getPhoneNumber());
+    }
+
+    public void addStudentSubject(Long studentId, Long subjectId){
+        Student student = em.find(Student.class, studentId);
+        Subject subject = em.find(Subject.class, subjectId);
+
+        student.getSubjects().add(subject);
+
+        em.persist(student);
+
     }
 
 

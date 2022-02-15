@@ -1,6 +1,7 @@
 package se.iths.service;
 
 import se.iths.entity.Subject;
+import se.iths.entity.Teacher;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -13,7 +14,9 @@ public class SubjectService {
     @PersistenceContext
     private EntityManager em;
 
-    public Subject createSubject(Subject subject){
+    public Subject createSubject(Subject subject, Long teacherId){
+        Teacher teacher = em.find(Teacher.class, teacherId);
+        subject.setTeacher(teacher);
         em.persist(subject);
         return subject;
     }

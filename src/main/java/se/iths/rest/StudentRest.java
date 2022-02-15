@@ -80,6 +80,13 @@ public class StudentRest {
         }
     }
 
+    @PATCH
+    @Path("addSubject")
+    public Response addSubject(@QueryParam("studentId") Long studentId, @QueryParam("subjectId") Long subjectId){
+        studentService.addStudentSubject(studentId, subjectId);
+        return Response.noContent().build();
+    }
+
     @DELETE
     @Path("{id}")
     public Response deleteStudent(@PathParam("id") Long id) {

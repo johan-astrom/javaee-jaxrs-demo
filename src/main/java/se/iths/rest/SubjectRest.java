@@ -41,8 +41,8 @@ public class SubjectRest {
     }
 
     @POST
-    public Response createSubject(Subject subject, @Context UriInfo uriInfo) {
-        Long subjectId = subjectService.createSubject(subject).getId();
+    public Response createSubject(Subject subject, @Context UriInfo uriInfo, @QueryParam("teacherId") Long teacherId) {
+        Long subjectId = subjectService.createSubject(subject, teacherId).getId();
         UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
         uriBuilder.path(String.valueOf(subjectId));
         return Response.created(uriBuilder.build()).build();
