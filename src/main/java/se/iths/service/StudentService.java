@@ -62,8 +62,10 @@ public class StudentService {
         Subject subject = em.find(Subject.class, subjectId);
 
         student.getSubjects().add(subject);
+        subject.getStudents().add(student);
 
         em.persist(student);
+        em.persist(subject);
 
     }
 

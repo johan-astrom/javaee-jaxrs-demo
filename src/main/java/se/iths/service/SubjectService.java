@@ -17,7 +17,11 @@ public class SubjectService {
     public Subject createSubject(Subject subject, Long teacherId){
         Teacher teacher = em.find(Teacher.class, teacherId);
         subject.setTeacher(teacher);
+        teacher.getSubjects().add(subject);
+
         em.persist(subject);
+        em.persist(teacher);
+        
         return subject;
     }
 

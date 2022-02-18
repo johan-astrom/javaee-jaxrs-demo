@@ -22,7 +22,7 @@ public class Teacher {
     @NotNull
     private String email;
     private String phoneNumber;
-    @OneToMany(mappedBy = "teacher")
+    @OneToMany(mappedBy = "teacher", fetch = FetchType.EAGER)
     private List<Subject> subjects = new ArrayList<>();
 
     public Long getId() {
