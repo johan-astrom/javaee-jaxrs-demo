@@ -1,16 +1,16 @@
-package se.iths.entity;
+package se.iths.dto;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-public class StudentDto implements Serializable {
+public class SubjectStudentDto implements Serializable {
     private final Long id;
     private final String firstName;
     private final String lastName;
     private final String email;
     private final String phoneNumber;
 
-    public StudentDto(Long id, String firstName, String lastName, String email, String phoneNumber) {
+    public SubjectStudentDto(Long id, String firstName, String lastName, String email, String phoneNumber) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -42,7 +42,7 @@ public class StudentDto implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        StudentDto entity = (StudentDto) o;
+        SubjectStudentDto entity = (SubjectStudentDto) o;
         return Objects.equals(this.id, entity.id) &&
                 Objects.equals(this.firstName, entity.firstName) &&
                 Objects.equals(this.lastName, entity.lastName) &&

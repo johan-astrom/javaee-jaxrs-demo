@@ -1,7 +1,7 @@
 package se.iths.rest;
 
 import se.iths.entity.Subject;
-import se.iths.entity.SubjectDto;
+import se.iths.dto.SubjectGetDto;
 import se.iths.exception.EntityNotFoundWebException;
 import se.iths.service.SubjectService;
 
@@ -23,7 +23,7 @@ public class SubjectRest {
     @GET
     @Path("{id}")
     public Response getSubjectById(@PathParam("id") Long id) {
-        SubjectDto subject = subjectService.getSubjectById(id);
+        SubjectGetDto subject = subjectService.getSubjectById(id);
         if (subject == null) {
             throw new EntityNotFoundWebException("No subject with the specified id found.", Response.Status.NO_CONTENT);
         } else {
@@ -33,7 +33,7 @@ public class SubjectRest {
 
     @GET
     public Response getAllSubjects(){
-        List<SubjectDto> subjects = subjectService.getAllSubjects();
+        List<SubjectGetDto> subjects = subjectService.getAllSubjects();
         if (subjects.isEmpty()){
             throw new EntityNotFoundWebException("No subjects found.", Response.Status.NO_CONTENT);
         }else {

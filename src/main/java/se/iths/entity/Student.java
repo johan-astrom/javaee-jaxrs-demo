@@ -1,5 +1,7 @@
 package se.iths.entity;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class Student {
     private String email;
     private String phoneNumber;
     @ManyToMany(mappedBy = "students")
+    @JsonFilter("studentSubjectFilter")
     private List<Subject> subjects = new ArrayList<>();
 
     public Long getId() {

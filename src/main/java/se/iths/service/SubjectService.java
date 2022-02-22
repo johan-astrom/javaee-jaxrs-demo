@@ -1,7 +1,7 @@
 package se.iths.service;
 
 import se.iths.entity.Subject;
-import se.iths.entity.SubjectDto;
+import se.iths.dto.SubjectGetDto;
 import se.iths.entity.Teacher;
 import se.iths.mapper.SubjectMapper;
 
@@ -28,8 +28,8 @@ public class SubjectService {
         return subject;
     }
 
-    public List<SubjectDto> getAllSubjects(){
-        List<SubjectDto> subjectDtos = new ArrayList<>();
+    public List<SubjectGetDto> getAllSubjects(){
+        List<SubjectGetDto> subjectDtos = new ArrayList<>();
         var subjects = em.createNamedQuery("Subject.GetAll", Subject.class).getResultList();
         for (Subject subject : subjects){
             subjectDtos.add(SubjectMapper.subjectToSubjectDto(subject));
@@ -37,7 +37,7 @@ public class SubjectService {
         return subjectDtos;
     }
 
-    public SubjectDto getSubjectById(Long id){
+    public SubjectGetDto getSubjectById(Long id){
         Subject subject = em.find(Subject.class, id);
         return SubjectMapper.subjectToSubjectDto(subject);
     }

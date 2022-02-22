@@ -1,5 +1,10 @@
 package se.iths.rest;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import se.iths.dto.StudentGetDto;
 import se.iths.entity.Student;
 import se.iths.exception.*;
 import se.iths.service.StudentService;
@@ -24,7 +29,7 @@ public class StudentRest {
     @GET
     @Produces("application/json")
     public Response getAllStudents() {
-        List<Student> students = studentService.getAllStudents();
+        List<StudentGetDto> students = studentService.getAllStudents();
         if (students.isEmpty()) {
             return Response.status(Response.Status.NO_CONTENT)
                     .entity(new StudentErrorMessage("No students found in the database.", Response.Status.NOT_FOUND))
@@ -37,12 +42,18 @@ public class StudentRest {
 
     @GET
     @Path("{id}")
-    public Response getStudentById(@PathParam("id") Long id) {
-        Student student = studentService.getStudentById(id);
+    public Response getStudentById(@PathParam("id") Long id) throws JsonProcessingException {
+        StudentGetDto student = studentService.getStudentById(id);
         if (student == null){
             throw new EntityNotFoundWebException("No student with the specified id  found.", Response.Status.NO_CONTENT);
         }else{
-            return Response.ok(student).build();
+            var filterProvider = new SimpleFilterProvider();
+            filterProvider.addFilter("studentSubjectFilter",
+                    SimpleBeanPropertyFilter.filterOutAllExcept("id", "name", "teacher"));
+            ObjectMapper om = new ObjectMapper();
+            om.setFilters(filterProvider);
+
+            return Response.ok(om.writeValueAsString(student)).build();
         }
     }
 

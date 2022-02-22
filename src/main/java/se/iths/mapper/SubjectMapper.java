@@ -1,26 +1,39 @@
 package se.iths.mapper;
 
+import se.iths.dto.StudentSubjectDto;
+import se.iths.dto.TeacherSubjectDto;
 import se.iths.entity.Student;
-import se.iths.entity.StudentDto;
+import se.iths.dto.SubjectStudentDto;
 import se.iths.entity.Subject;
-import se.iths.entity.SubjectDto;
+import se.iths.dto.SubjectGetDto;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SubjectMapper {
 
-    public static SubjectDto subjectToSubjectDto(Subject subject) {
-        List<StudentDto> studentDtos = new ArrayList<>();
+    public static SubjectGetDto subjectToSubjectDto(Subject subject) {
+        List<SubjectStudentDto> subjectStudentDtos = new ArrayList<>();
         for (Student student : subject.getStudents()) {
-            studentDtos.add(StudentMapper.studentToStudentDto(student));
+            subjectStudentDtos.add(StudentMapper.studentToStudentDto(student));
         }
 
-        return new SubjectDto(
+        return new SubjectGetDto(
                 subject.getId(),
                 subject.getName(),
-                studentDtos,
+                subjectStudentDtos,
                 TeacherMapper.teacherToTeacherDto(subject.getTeacher())
         );
+    }
+
+    protected static StudentSubjectDto subjectToStudentSubjectDto(Subject subject){
+        return new StudentSubjectDto(subject.getId(),
+                subject.getName(),
+                TeacherMapper.teacherToTeacherDto(subject.getTeacher()));
+    }
+
+    protected static TeacherSubjectDto subjectToTeacherSubjectDto(Subject subject){
+        return new TeacherSubjectDto(subject.getId(),
+                subject.getName());
     }
 }

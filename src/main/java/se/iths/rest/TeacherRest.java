@@ -1,5 +1,6 @@
 package se.iths.rest;
 
+import se.iths.dto.TeacherGetDto;
 import se.iths.entity.Student;
 import se.iths.entity.Teacher;
 import se.iths.exception.EntityNotFoundServiceException;
@@ -24,7 +25,7 @@ public class TeacherRest {
 
     @GET
     public Response getAllTeachers() {
-        List<Teacher> teachers = teacherService.getAllTeachers();
+        List<TeacherGetDto> teachers = teacherService.getAllTeachers();
         if (teachers.isEmpty()) {
             return Response.status(Response.Status.NO_CONTENT)
                     .entity(new StudentErrorMessage("No teachers found in the database.", Response.Status.NO_CONTENT))
@@ -38,7 +39,7 @@ public class TeacherRest {
     @GET
     @Path("{id}")
     public Response getTeacherById(@PathParam("id") Long id) {
-        Teacher teacher = teacherService.getTeacherById(id);
+        TeacherGetDto teacher = teacherService.getTeacherById(id);
         if (teacher == null) {
             throw new EntityNotFoundWebException("No teacher with the specified id found.", Response.Status.NO_CONTENT);
         } else {
@@ -49,7 +50,7 @@ public class TeacherRest {
     @GET
     @Path("getByLastName/{lastName}")
     public Response getTeacherByLastName(@PathParam("lastName") String lastName) {
-        Teacher teacher = teacherService.getTeacherByLastName(lastName);
+        TeacherGetDto teacher = teacherService.getTeacherByLastName(lastName);
         if (teacher == null) {
             throw new EntityNotFoundWebException("No teacher with the specified last name found.", Response.Status.NO_CONTENT);
         } else {
